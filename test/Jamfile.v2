@@ -1,25 +1,62 @@
-# Copyright Alexander Nasonov 2007
-#
-# Distributed under the Boost Software License, Version 1.0. 
-# (See accompanying file LICENSE_1_0.txt or copy at 
-# http://www.boost.org/LICENSE_1_0.txt)
 
-# TODO: get rid of dummy .cpp files that only #include other .cpp file.
+# Copyright (C) 2006-2009, 2012 Alexander Nasonov
+# Copyright (C) 2012 Lorenzo Caminiti
+# Distributed under the Boost Software License, Version 1.0
+# (see accompanying file LICENSE_1_0.txt or a copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+# Home at http://www.boost.org/libs/scope_exit
 
 import testing ;
 
-run native.cpp    ../../../libs/test/build//boost_test_exec_monitor :  :  : <define>BOOST_TYPEOF_NATIVE          :  ;
-run emulation.cpp ../../../libs/test/build//boost_test_exec_monitor :  :  : <define>BOOST_TYPEOF_EMULATION       :  ;
+project
+    :   requirements
+        <library>/boost/test//boost_test_exec_monitor
+        <library>/boost//unit_test_framework
+        <link>static
+    ;
 
-run native_tpl.cpp    ../../../libs/test/build//boost_test_exec_monitor :  :  : <define>BOOST_TYPEOF_NATIVE     :  ;
-run emulation_tpl.cpp ../../../libs/test/build//boost_test_exec_monitor :  :  : <define>BOOST_TYPEOF_EMULATION  :  ;
+# Run variadic and sequence syntax (also forcing no variadic macros).
+rule run-vaseq ( file_name )
+{
+    run $(file_name).cpp ;
+    run $(file_name)_seq.cpp ;
+    run $(file_name)_seq.cpp : : : <define>BOOST_NO_VARIADIC_MACROS :
+            $(file_name)_seq_nova : ;
+}
 
-compile-fail native_const_error.cpp    : <define>BOOST_TYPEOF_NATIVE    ;
-compile-fail emulation_const_error.cpp : <define>BOOST_TYPEOF_EMULATION ;
+test-suite world_tests
+    :   [ run-vaseq world ]
+        [ run-vaseq world_checkpoint ]
+        [ run-vaseq world_checkpoint_all ]
+        [ run world_lambda.cpp ]
+        [ run-vaseq world_this ]
+        [ run-vaseq world_tpl ]
+        [ run world_void.cpp ]
+    ;
 
-compile-fail native_cv_error.cpp    : <define>BOOST_TYPEOF_NATIVE    ;
-compile-fail emulation_cv_error.cpp : <define>BOOST_TYPEOF_EMULATION ;
+test-suite native_tests
+    :   [ run native.cpp : : : <define>BOOST_TYPEOF_NATIVE ]
+        [ run native_tpl.cpp : : : <define>BOOST_TYPEOF_NATIVE ]
+        [ run native_this.cpp : : : <define>BOOST_TYPEOF_NATIVE ]
+        [ compile-fail native_const_error.cpp : <define>BOOST_TYPEOF_NATIVE ]
+        [ compile-fail native_cv_error.cpp : <define>BOOST_TYPEOF_NATIVE ]
+        # Following test is known to fail on MSVC 7.1 and 8.0.
+        [ run native_tu_test.cpp native_tu1.cpp native_tu2.cpp : : :
+                <define>BOOST_TYPEOF_NATIVE ]
+    ;
 
-run native_tu_test.cpp    native_tu1.cpp native_tu2.cpp ../../../libs/test/build//boost_test_exec_monitor  :  :  : <define>BOOST_TYPEOF_NATIVE    :  ;
-run emulation_tu_test.cpp native_tu1.cpp native_tu2.cpp ../../../libs/test/build//boost_test_exec_monitor  :  :  : <define>BOOST_TYPEOF_EMULATION :  ;
+test-suite emulation_tests
+    :   [ run native.cpp : : : <define>BOOST_TYPEOF_EMULATION : emulation : ]
+        [ run native_tpl.cpp : : : <define>BOOST_TYPEOF_EMULATION :
+                emulation_tpl : ]
+        [ run native_this.cpp : : : <define>BOOST_TYPEOF_EMULATION :
+                emulation_this : ]
+        [ compile-fail native_const_error.cpp : <define>BOOST_TYPEOF_EMULATION :
+                emulation_const_error : ]
+        [ compile-fail native_cv_error.cpp : <define>BOOST_TYPEOF_EMULATION :
+                emulation_cv_error : ]
+        # Following test is known to fail on MSVC 7.1 and 8.0.
+        [ run native_tu_test.cpp native_tu1.cpp native_tu2.cpp : : :
+                <define>BOOST_TYPEOF_EMULATION : emulation_tu_test : ]
+    ;
 

@@ -1,0 +1,22 @@
+
+# Copyright (C) 2006-2009, 2012 Alexander Nasonov
+# Copyright (C) 2012 Lorenzo Caminiti
+# Distributed under the Boost Software License, Version 1.0
+# (see accompanying file LICENSE_1_0.txt or a copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+# Home at http://www.boost.org/libs/scope_exit
+
+import testing ;
+
+# Run variadic and sequence syntax (also forcing no variadic macros).
+rule run-vaseq ( file_name )
+{
+    run $(file_name).cpp ;
+    run $(file_name)_seq.cpp ;
+    run $(file_name)_seq.cpp : : : <define>BOOST_NO_VARIADIC_MACROS :
+            $(file_name)_seq_nova : ;
+}
+
+run-vaseq try_catch ;
+run-vaseq scope_guard ;
+
