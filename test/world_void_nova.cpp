@@ -6,7 +6,6 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 // Home at http://www.boost.org/libs/scope_exit
 
-#include "tu_test.hpp"
-
-int tu2(void) { return inline_f() + template_f(2); }
+#include "nova.hpp"
+#include "world_void.cpp"
 
