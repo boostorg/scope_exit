@@ -10,11 +10,9 @@ import testing ;
 
 rule run-vaseq ( command target )
 {
-    # Sun does not automatically detect type-of emulation mode (force it).
-    run $(target).cpp : : : <toolset>sun:<define>BOOST_TYPEOF_EMULATION ;
-    run $(target)_seq.cpp : : : <toolset>sun:<define>BOOST_TYPEOF_EMULATION ;
-    run $(target)_seq_nova.cpp : : :
-            <toolset>sun:<define>BOOST_TYPEOF_EMULATION ;
+    run $(target).cpp : : : ;
+    run $(target)_seq.cpp : : : ;
+    run $(target)_seq_nova.cpp : : : ;
 }
 
 rule run-typeof ( native_target emulation_target )
