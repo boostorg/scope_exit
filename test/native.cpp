@@ -203,14 +203,14 @@ void test_lambda(void) {
 
     {
         auto bar = [&]() {
-            int local_i = 0, local_j = 1;
-            BOOST_SCOPE_EXIT( (&local_i) (&local_j) ) {
-                local_i = local_j = 2; // modify references
+            int i = 0, j = 1;
+            BOOST_SCOPE_EXIT( (&i) (&j) ) {
+                i = j = 2; // modify references
             }
             BOOST_SCOPE_EXIT_END
 
-            BOOST_TEST(local_i == 2);
-            BOOST_TEST(local_j == 2);
+            BOOST_TEST(i == 2);
+            BOOST_TEST(j == 2);
         };
         bar();
     }
