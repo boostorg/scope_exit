@@ -12,8 +12,7 @@
 #ifndef DOXYGEN
 
 #include <boost/config/workaround.hpp>
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/int.hpp>
+#include <boost/type_traits/integral_constant.hpp>
 #include <boost/type_traits/enable_if.hpp>
 #include <boost/function.hpp>
 #include <boost/typeof/typeof.hpp>
@@ -337,7 +336,7 @@ extern boost::scope_exit::detail::undeclared BOOST_SCOPE_EXIT_AUX_ARGS;
 
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>
-#include <boost/mpl/int.hpp>
+#include <boost/type_traits/integral_constant.hpp>
 #include <boost/type_traits/is_function.hpp>
 #include <boost/type_traits/enable_if.hpp>
 
@@ -448,7 +447,7 @@ struct msvc_register_type : msvc_extract_type<ID> {
 
 template<int Id>
 struct msvc_typeid_wrapper {
-    typedef typename msvc_extract_type<boost::mpl::int_<Id>
+    typedef typename msvc_extract_type<boost::integral_constant<int, Id>
             >::id2type id2type;
     typedef typename id2type::type type;
 };
@@ -462,7 +461,7 @@ template<typename T>
 struct encode_type {
     BOOST_STATIC_CONSTANT(unsigned, value = encode_counter<T>::count);
     typedef typename msvc_register_type<T,
-            boost::mpl::int_<value> >::id2type type;
+            boost::integral_constant<int, value> >::id2type type;
     BOOST_STATIC_CONSTANT(unsigned, next = value + 1);
 };
 
