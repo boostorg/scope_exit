@@ -14,7 +14,7 @@
 #include <boost/config/workaround.hpp>
 #include <boost/mpl/assert.hpp>
 #include <boost/mpl/int.hpp>
-#include <boost/utility/enable_if.hpp>
+#include <boost/type_traits/enable_if.hpp>
 #include <boost/function.hpp>
 #include <boost/typeof/typeof.hpp>
 #include <boost/config.hpp>
@@ -339,7 +339,7 @@ extern boost::scope_exit::detail::undeclared BOOST_SCOPE_EXIT_AUX_ARGS;
 #include <boost/detail/workaround.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/type_traits/is_function.hpp>
-#include <boost/utility/enable_if.hpp>
+#include <boost/type_traits/enable_if.hpp>
 
 #if defined(BOOST_MSVC)
 #   include <typeinfo>
@@ -472,14 +472,14 @@ struct sizer {
 };
 
 template<typename T>
-typename boost::disable_if<
-      typename boost::is_function<T>::type
+typename boost::enable_if_<
+      !boost::is_function<T>::value
     , typename sizer<T>::type
 >::type encode_start(T const&);
 
 template<typename T>
-typename boost::enable_if<
-      typename boost::is_function<T>::type
+typename boost::enable_if_<
+      boost::is_function<T>::value
     , typename sizer<T>::type
 >::type encode_start(T&);
 
