@@ -6,8 +6,8 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 // Home at http://www.boost.org/libs/scope_exit
 
-#ifndef FILE_boost_scope_exit_hpp_INCLUDED
-#define FILE_boost_scope_exit_hpp_INCLUDED
+#ifndef BOOST_SCOPE_EXIT_HPP
+#define BOOST_SCOPE_EXIT_HPP
 
 #ifndef DOXYGEN
 
@@ -1411,5 +1411,5 @@ compilers that support C++11 lambda functions.
 
 #endif // DOXYGEN
 
-#endif // #ifndef FILE_boost_scope_exit_hpp_INCLUDED
+#endif // BOOST_SCOPE_EXIT_HPP
 
