@@ -11,7 +11,7 @@
 
 #ifndef DOXYGEN
 
-#include <boost/detail/workaround.hpp>
+#include <boost/config/workaround.hpp>
 #include <boost/mpl/assert.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/utility/enable_if.hpp>
