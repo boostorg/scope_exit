@@ -11,5 +11,6 @@
     "maintainers": [
         "Alexander Nasonov <alexander.nasonov -at- gmail.com>",
         "Lorenzo Caminiti <lorcaminiti -at- gmail.com>"
-    ]
+    ],
+    "cxxstd": "03"
 }
