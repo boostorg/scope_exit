@@ -185,10 +185,42 @@ void test_capture_all(void) {
 #endif // lambdas
 }
 
+void test_lambda(void) {
+
+    {
+        int i = 0, j = 1;
+        auto foo = [&]() {
+            BOOST_SCOPE_EXIT( (&i) (&j) ) {
+                i = j = 2; // modify references
+            }
+            BOOST_SCOPE_EXIT_END
+        };
+        foo();
+    
+        BOOST_TEST(i == 2);
+        BOOST_TEST(j == 2);
+    }
+
+    {
+        auto bar = [&]() {
+            int i = 0, j = 1;
+            BOOST_SCOPE_EXIT( (&i) (&j) ) {
+                i = j = 2; // modify references
+            }
+            BOOST_SCOPE_EXIT_END
+
+            BOOST_TEST(i == 2);
+            BOOST_TEST(j == 2);
+        };
+        bar();
+    }
+}
+
 int main(void) {
     test_non_local();
     test_types();
     test_capture_all();
+    test_lambda();
     return boost::report_errors();
 }
 
